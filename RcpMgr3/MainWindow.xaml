@@ -1,0 +1,49 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:RcpMgr3" x:Name="window" x:Class="RcpMgr3.MainWindow"
+        Title="RcpMgr3" Height="827" Width="809">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding Height, ElementName=MainMenu}"/>
+            <RowDefinition Height="151*"/>
+        </Grid.RowDefinitions>
+        <Menu Name="MainMenu" IsMainMenu="True"  HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="{Binding Width, ElementName=window}"  Margin="0,0,0,0">
+            <MenuItem Header="File">
+                <MenuItem Header="New..." Name="newRecipeMenuItem" Click="newRecipeMenuItem_Click"/>
+                <MenuItem Header="Open..." Name="openRecipeMenuItem" Click="openRecipeMenuItem_Click"/>
+                <MenuItem Header="Save..." Click="saveRecipe" Name="saveMenuItem"/>
+                <MenuItem x:Name="ExitMenuItem" Header="Exit" Click="ExitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Recipe">
+                <MenuItem x:Name="NewIngredientMenuItem" Header="New Ingredient..." Click="NewIngredientMenuItem_Click"/>
+                <MenuItem x:Name="NewRecipeStepMenuItem" Header="New Recipe Step..." Click="NewRecipeStepMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid x:Name="RecipeGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Name="titleRow" Height="35" />
+                <RowDefinition Name="detailRow"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="270" Name="IngredientsCol"/>
+                <ColumnDefinition  Width="361*" Name="StepCol"/>
+            </Grid.ColumnDefinitions>
+            <!--<ListBox Name="IngredientsListBox" HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}" Grid.Row="0" Grid.Column="0"  VerticalAlignment="Top" Width="{Binding Width, ElementName=IngredientsCol}"/>-->
+            <!--<local:EnhancedListBox x:Name="StepListBox"  HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Width="{Binding Width, ElementName=StepCol}"/>-->
+            <Label Content="Recipe name:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Name="titleTextBox" Width="120" Grid.Row="0" Grid.Column="0" Height="27" />
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0">
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <StackPanel Name="IngredientsStackPanel" HorizontalAlignment="Left"  Margin="10,10,0,0" VerticalAlignment="Top" >
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1" >
+                <Border BorderBrush="Black" BorderThickness="1">
+                    <local:RecipeStackPanel x:Name="StepStackPanel" HorizontalAlignment="Left"  Margin="10,10,0,0" VerticalAlignment="Top" />
+                </Border>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

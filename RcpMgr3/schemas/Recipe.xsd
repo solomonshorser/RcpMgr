@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Recipe"
+    targetNamespace="nsRecipe"
+    elementFormDefault="qualified"
+    xmlns="nsRecipe"
+    xmlns:mstns="http://tempuri.org/Recipe.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:nspa="nsPartsAssembly">
+
+  <xs:import id="nspa"  namespace="nsPartsAssembly" schemaLocation="PartsAssembly.xsd"/>
+
+  <xs:complexType name="Step">
+    <xs:complexContent>
+      <xs:extension base="nspa:Assembly">
+        <xs:sequence>
+          <xs:element name="SequenceNumber" type="xs:int"/>
+          <xs:element name="Details" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Recipe">
+    <xs:sequence>
+      <xs:element name="RecipeStep" type="Step" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="Recipe" type="Recipe"/>
+</xs:schema>

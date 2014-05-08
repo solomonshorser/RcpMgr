@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="RcpMgr3.IngredientControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:RcpMgr3"
+             mc:Ignorable="d"
+             d:DesignHeight="126.667" d:DesignWidth="245" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+    <Grid  Margin="0,0,5,5">
+        <!--
+        <Grid.DataContext>
+            <my:Ingredient />
+        </Grid.DataContext>
+        -->
+        <TextBox x:Name="QuantityTextBox" HorizontalAlignment="Left" Height="23" Margin="110,62,0,0" TextWrapping="Wrap" Text="{Binding Path=Quantity , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"  LostFocus="QuanityTextBox_LostFocus" TabIndex="2" />
+        <TextBox x:Name="UnitOfMeasureTextBox" HorizontalAlignment="Left" Height="23" Margin="110,93,0,0" TextWrapping="Wrap" Text="{Binding Path=UnitOfMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" LostFocus="UnitOfMeasureTextBox_LostFocus" TabIndex="3"/>
+        <TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="23" Margin="110,31,0,0" TextWrapping="Wrap" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"  LostFocus="NameTextBox_LostFocus" TabIndex="1"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top"/>
+        <Label Content="Quantity" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+        <Label Content="Unit of Measure" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="IngredientIDLabel" Content="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" FontStyle="Italic" FontSize="10"  MouseMove="UserControl_MouseMove" MouseLeftButtonDown="IngredientIDLabel_MouseLeftButtonDown" MouseRightButtonDown="IngredientIDLabel_MouseRightButtonDown"/>
+
+    </Grid>
+</UserControl>
