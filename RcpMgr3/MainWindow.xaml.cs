@@ -76,21 +76,7 @@ namespace RcpMgr3
 
         private void addNewStep(RecipeStepControl rsc)
         {
-            //rsc.OperandsBox.Drop += (object dragSender, DragEventArgs dragEvtArgs) =>
-            //{
-            //    String i = (String)dragEvtArgs.Data.GetData(DataFormats.StringFormat);
 
-            //    if (i != null)
-            //    {
-            //        Label ingInfoLabel = new Label();
-            //        ingInfoLabel.Content = i;
-
-            //        rsc.OperandsBox.Items.Add(ingInfoLabel);
-            //    }
-            //};
-
-            //this.StepListBox.Items.Add(rsc);
-//            rsc.NameTextBox.DataContext = rsc.Step.Name;
             rsc.Margin = new Thickness(3, 3, 3, 3);
             
             this.StepStackPanel.Children.Add(rsc);
@@ -146,75 +132,111 @@ namespace RcpMgr3
                 
                 XmlSerializer x = new XmlSerializer(r.GetType());
                 x.Serialize(fstream, r);
-                //x.Serialize(Console.Out, r);
-                //Console.WriteLine();
             }
 
             
         }
 
+        private bool clearScreen()
+        {
+            //Only need to show the dialoge if there is content.
+            if (!this.titleTextBox.Text.Equals("") || this.IngredientsStackPanel.Children.Count > 0 || this.StepStackPanel.Children.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show("If you do this, you will lose any changes you have made to the current file.", "Warning!", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, MessageBoxResult.OK);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    this.rcp = new Recipe();
+                    this.titleTextBox.Text = "";
+                    this.IngredientsStackPanel.Children.Clear();
+                    this.StepStackPanel.Children.Clear();
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+
         private void newRecipeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            clearScreen();
         }
 
         private void openRecipeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            bool screenCleared = clearScreen();
 
-            dialog.Title = "Open a recipe XML file";
-            dialog.Filter = "XML-file (.xml)|*.xml";
-            dialog.DefaultExt = ".xml";
-            bool? result = dialog.ShowDialog();
-
-            if (result == true)
+            if (screenCleared)
             {
-                Recipe r = new Recipe();
+                OpenFileDialog dialog = new OpenFileDialog();
 
-                XmlReader xReader = new XmlTextReader(dialog.FileName);
-                XmlSerializer x = new XmlSerializer(r.GetType());
-                r = (Recipe)x.Deserialize(xReader);
+                dialog.Title = "Open a recipe XML file";
+                dialog.Filter = "XML-file (.xml)|*.xml";
+                dialog.DefaultExt = ".xml";
+                bool? result = dialog.ShowDialog();
 
-                if (r != null)
+                if (result == true)
                 {
-                    this.titleTextBox.Text = r.Name;
-                    this.rcp = r;
-                    //foreach (Ingredient i in rcp.Ingredients)
-                    //{
-                    //    this.addNewIngredient(i);
-                    //}
-                    
-                    foreach (RecipeStep s in rcp.Steps)
+                    Recipe r = new Recipe();
+
+                    XmlReader xReader = new XmlTextReader(dialog.FileName);
+                    XmlSerializer x = new XmlSerializer(r.GetType());
+                    r = (Recipe)x.Deserialize(xReader);
+
+                    if (r != null)
                     {
-                        RecipeStepControl rsp = new RecipeStepControl(s.Name, s.ID, s.Details, s.SequenceNumber);
+                        this.titleTextBox.Text = r.Name;
+                        this.rcp = r;
 
-                        //rsp.Step.Name = s.Name;
-                        //rsp.Step.ID = s.ID;
-                        //rsp.Step.Details = s.Details;
-                        //rsp.Step.SequenceNumber = s.SequenceNumber;
-                        foreach (RecipeComponent rc in s.Operands)
+
+                        foreach (RecipeStep s in rcp.Steps)
                         {
-                            if (rc is Ingredient)
-                            {
-                                //s.RemoveOperand(rc as Ingredient);
-                                IngredientControl ic = new IngredientControl(rc as Ingredient);
-                                
-                                this.addNewIngredientControl(ic);
-                                rsp.addIngredientControl(ic);
-                            }
-                            else if (rc is RecipeStep)
-                            {
-                                RecipeStepControl rsc = new RecipeStepControl(rc as RecipeStep);
-                                rsp.addRecipeStepControl(rsc);
-                                this.addNewStep(rsc);
-                            }
+                            RecipeStepControl rsp = new RecipeStepControl(s.Name, s.ID, s.Details, s.SequenceNumber);
 
+
+                            foreach (RecipeComponent rc in s.Operands)
+                            {
+                                if (rc is Ingredient)
+                                {
+                                    //s.RemoveOperand(rc as Ingredient);
+                                    IngredientControl ic = new IngredientControl(rc as Ingredient);
+
+                                    this.addNewIngredientControl(ic);
+                                    rsp.addIngredientControl(ic);
+                                }
+                                else if (rc is RecipeStep)
+                                {
+                                    bool addToMain = false;
+                                    RecipeStepControl recipeControl = getExistingRecipeStepControl((rc as RecipeStep).ID);
+
+                                    if (recipeControl == null)
+                                    {
+                                        recipeControl = new RecipeStepControl(rc as RecipeStep);
+                                        addToMain = true;
+                                    }
+
+                                    rsp.addRecipeStepControl(recipeControl);
+
+                                    if (addToMain)
+                                        this.addNewStep(recipeControl);
+                                }
+                            }
+                            this.addNewStep(rsp);
                         }
-                        this.addNewStep(rsp);
+                        this.titleTextBox.Text = r.Name;
                     }
-                    this.titleTextBox.Text = r.Name;
                 }
             }
+        }
+
+        private RecipeStepControl getExistingRecipeStepControl(string id)
+        {
+            foreach (RecipeStepControl c in this.StepStackPanel.Children.OfType<RecipeStepControl>())
+            {
+                if (c.Step.ID.Equals(id))
+                    return c;
+            }
+            return null;
         }
     }
 }

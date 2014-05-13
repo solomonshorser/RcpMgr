@@ -26,16 +26,6 @@ namespace RcpMgr3
     {
         private RecipeStep _recipeStep = new RecipeStep();
 
-        //public List<RecipeComponent> BindingOperands
-        //{
-        //    get
-        //    {
-        //        return _recipeStep.Operands;
-        //    }
-            
-        //}
-        //private List<RecipeStep> _dependents = new List<RecipeStep>();
-
         public event RecipeOperandChangedEventHandler OperandChanged;
         public event RecipeStepMovedUpEventHandler MovedUp;
         public event RecipeStepMovedDownEventHandler MovedDown;
@@ -43,24 +33,17 @@ namespace RcpMgr3
         public RecipeStepControl()
         {
             InitializeComponent();
-            //this.NameTextBox.Text = _recipeStep.Name;
+            //this.NameTextBox.Text = this._recipeStep.Name;
             this.NameTextBox.DataContext = this._recipeStep;
             this.sequenceNumberLabel.DataContext = this._recipeStep;
             //this.OperandsBox.ItemsSource = this._recipeStep.Operands;
         }
 
-        //public int Index
-        //{
-        //    get
-        //    {
-        //        return (this.Parent as EnhancedStackPanel).Children.IndexOf(this);
-        //    }
-        //}
 
         public RecipeStepControl(String name, String ID, String detail, int seqNum)
         {
             InitializeComponent();
-            this.NameTextBox.Text = name;
+            //this.NameTextBox.Text = name;
 
             RecipeStep rs = new RecipeStep();
 
@@ -69,6 +52,9 @@ namespace RcpMgr3
             rs.Details = detail;
             rs.SequenceNumber = seqNum;
 
+            this.sequenceNumberLabel.DataContext = rs;
+            this.NameTextBox.DataContext = rs;
+
             this._recipeStep = rs;
         }
         public void SetSequenceNumber(int seq)
@@ -76,18 +62,28 @@ namespace RcpMgr3
             this._recipeStep.SequenceNumber = seq;
             this.sequenceNumberLabel.Content = seq; //this shouldn't be necessary but I can't seem to get binding to work.
         }
-        public RecipeStepControl(RecipeStep rs)
+        public RecipeStepControl(RecipeStep recipeStep)
         {
             InitializeComponent();
-            _recipeStep = rs;
-            //this.NameTextBox.Text = _recipeStep.Name;
-            this.NameTextBox.DataContext = rs;
-            this.sequenceNumberLabel.DataContext = rs.SequenceNumber;
-            this.OperandsBox.ItemsSource = _recipeStep.Operands;
-            foreach (RecipeComponent rc in rs.Operands)
+            
+            //this.NameTextBox.Text = this._recipeStep.Name;
+            this.NameTextBox.DataContext = recipeStep;
+            this.sequenceNumberLabel.DataContext = recipeStep;
+            //this.OperandsBox.ItemsSource = _recipeStep.Operands;
+            this._recipeStep = recipeStep;
+            
+            foreach (RecipeComponent rComponent in recipeStep.Operands)
             {
-                IngredientControl ic = new IngredientControl(rc as Ingredient);
-                addIngredientToRecipeStep(ic, this);
+                if (rComponent is Ingredient)
+                {
+                    IngredientControl ingredientControl = new IngredientControl(rComponent as Ingredient);
+                    addIngredientToRecipeStep(ingredientControl, this);
+                }
+                else if (rComponent is RecipeStep)
+                {
+                    RecipeStepControl recipeStepControl = new RecipeStepControl(rComponent as RecipeStep);
+                    addRecipeStepControl(recipeStepControl);
+                }
             }
         }
 
@@ -99,9 +95,11 @@ namespace RcpMgr3
                 String summary;
                 summary = this.NameTextBox.Text + "(";
                 int i = 0; 
-                foreach (RecipeComponentLabel l in this.OperandsBox.Items)
+                foreach (object l in this.OperandsBox.Items)
                 {
-                    summary +=  l.Content;
+                    if (l is RecipeComponentLabel)
+                        summary += ((RecipeComponentLabel)l).Content;
+
                     i++;
                     if (i < this.OperandsBox.Items.Count)
                         summary += ", ";
@@ -171,7 +169,6 @@ namespace RcpMgr3
                 };
 
                 this.OperandsBox.Items.Add(l);
-
             }
         }
 
@@ -262,6 +259,12 @@ namespace RcpMgr3
                     
                 }
             }
+        }
+
+        internal RecipeStepControl getStep(string stepID)
+        {
+
+            return null;
         }
     }
 }

@@ -10,8 +10,9 @@
              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
     <Grid>
         <Label Content="Name" HorizontalAlignment="Left" Margin="118,10,0,0" VerticalAlignment="Top" MouseDown="Label_MouseDown" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderBrush="Black"/>
-        <TextBox x:Name="NameTextBox" Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="165,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" LostFocus="NameTextBox_LostFocus" TabIndex="1"/>
-        <ListBox x:Name="OperandsBox" ItemsSource="{Binding  Path=this._recipeStep.Operands, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="110" Margin="10,67,0,3" VerticalAlignment="Top" Width="406"   Drop="OperandsBox_Drop" AllowDrop="True" KeyDown="OperandsBox_KeyDown" TabIndex="4"/>
+        <TextBox x:Name="NameTextBox" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="165,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" LostFocus="NameTextBox_LostFocus" TabIndex="1"/>
+        <!--<ListBox x:Name="OperandsBox" ItemsSource="{Binding  Path=this._recipeStep.Operands, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="110" Margin="10,67,0,3" VerticalAlignment="Top" Width="406"   Drop="OperandsBox_Drop" AllowDrop="True" KeyDown="OperandsBox_KeyDown" TabIndex="4"/>-->
+        <ListBox x:Name="OperandsBox" HorizontalAlignment="Left" Height="110" Margin="10,67,0,3" VerticalAlignment="Top" Width="406"   Drop="OperandsBox_Drop" AllowDrop="True" KeyDown="OperandsBox_KeyDown" TabIndex="4"/>
         <Label Content="Operands" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Button x:Name="MoveStepUpButton" Content="Up" HorizontalAlignment="Left" Margin="327,10,0,0" VerticalAlignment="Top" Width="42" Click="MoveStepUpButton_Click" TabIndex="2"/>
         <Button x:Name="MoveStepDownButton" Content="Down" HorizontalAlignment="Left" Margin="374,10,3,0" VerticalAlignment="Top" Width="42" Click="MoveStepDownButton_Click" TabIndex="3"/>

@@ -26,20 +26,21 @@
                 <RowDefinition Name="detailRow"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="270" Name="IngredientsCol"/>
+                <ColumnDefinition Width="10" Name="IngredientsCol"/>
+                <ColumnDefinition Width="260"/>
                 <ColumnDefinition  Width="361*" Name="StepCol"/>
             </Grid.ColumnDefinitions>
             <!--<ListBox Name="IngredientsListBox" HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}" Grid.Row="0" Grid.Column="0"  VerticalAlignment="Top" Width="{Binding Width, ElementName=IngredientsCol}"/>-->
             <!--<local:EnhancedListBox x:Name="StepListBox"  HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Width="{Binding Width, ElementName=StepCol}"/>-->
-            <Label Content="Recipe name:" Grid.Row="0" Grid.Column="0"/>
-            <TextBox Name="titleTextBox" Width="120" Grid.Row="0" Grid.Column="0" Height="27" />
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0">
+            <Label Content="Recipe name:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <TextBox Name="titleTextBox" Width="120" Grid.Row="0" Grid.Column="1" Height="27" Margin="65,4,75,4" />
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Border BorderBrush="Black" BorderThickness="1">
                     <StackPanel Name="IngredientsStackPanel" HorizontalAlignment="Left"  Margin="10,10,0,0" VerticalAlignment="Top" >
                     </StackPanel>
                 </Border>
             </ScrollViewer>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1" >
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2" >
                 <Border BorderBrush="Black" BorderThickness="1">
                     <local:RecipeStackPanel x:Name="StepStackPanel" HorizontalAlignment="Left"  Margin="10,10,0,0" VerticalAlignment="Top" />
                 </Border>
