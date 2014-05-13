@@ -80,22 +80,18 @@ namespace RcpMgr3
             rsc.Margin = new Thickness(3, 3, 3, 3);
             
             this.StepStackPanel.Children.Add(rsc);
-            //rsc.sequenceNumberLabel.DataContext = rsc.Index;
-            //rsc.sequenceNumberLabel.Content = this.StepStackPanel.Children.IndexOf(rsc)+1;
             int seqNum = this.StepStackPanel.Children.IndexOf(rsc) + 1;
             rsc.SetSequenceNumber(seqNum);
             rsc.MovedUp += (object o, EventArgs args) =>
             {
                 this.StepStackPanel.MoveItemUp(rsc);
                 int seq = this.StepStackPanel.Children.IndexOf(rsc)+1;
-                //rsc.SetSequenceNumber(seq);
             };
 
             rsc.MovedDown += (object o, EventArgs args) =>
             {
                 this.StepStackPanel.MoveItemDown(rsc);
                 int seq = this.StepStackPanel.Children.IndexOf(rsc)+1;
-                //rsc.SetSequenceNumber(seq);
             };
         }
 
