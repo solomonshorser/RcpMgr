@@ -266,5 +266,20 @@ namespace RcpMgr3
 
             return null;
         }
+
+        private void Label_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.backgroundBox.Fill = SystemColors.ActiveCaptionBrush;
+            this.NameTextBox.Background = SystemColors.ActiveCaptionBrush;
+            this.NameLabel.Background = SystemColors.ControlLightBrush;
+            this.NameLabel.ToolTip = "Drag this step to another step.";
+        }
+
+        private void Label_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.backgroundBox.Fill = SystemColors.WindowBrush;
+            this.NameTextBox.Background = SystemColors.WindowBrush;
+            this.NameLabel.Background = SystemColors.WindowBrush;
+        }
     }
 }
