@@ -16,11 +16,6 @@ using System.Windows.Shapes;
 
 namespace RcpMgr3
 {
-    //public class IngredientChangedEventArgs : EventArgs
-    //{
-    //    public String SummaryString { get; set; }
-    //}
-
     public delegate void IngredientChangedEventHandler(object sender, EventArgs args);
 
     /// <summary>
@@ -88,15 +83,6 @@ namespace RcpMgr3
             
         }
 
-        private void UserControl_MouseMove(object sender, MouseEventArgs e)
-        {
-            //String ingInfo = SummaryString;
-            
-            //if (ingInfo.Trim().Length>0)
-            //    //DragDrop.DoDragDrop(this, ingInfo.Trim() + " ("+ this.IngredientIDLabel.Content.ToString()+")", System.Windows.DragDropEffects.Copy);
-            //    DragDrop.DoDragDrop(this, this.SummaryString, System.Windows.DragDropEffects.Copy);
-        }
-
         public String SummaryString
         {
             get
@@ -121,18 +107,9 @@ namespace RcpMgr3
                 IngredientChanged(this, args);
             }
             this.IngredientIDLabel.Content = this.SummaryString + " (" + this._ingredient.ID + ")";
-
-            //_ingredient.Name = this.NameTextBox.Text;
-            //_ingredient.Quantity = this.QuantityTextBox.Text;
-            //_ingredient.UnitOfMeasure = this.UnitOfMeasureTextBox.Text;
-
-            //if (Dependents!=null && Dependents.Count > 0)
-            //{
-            //    foreach (Label d in Dependents)
-            //    {
-            //        d.Content = SummaryString;
-            //    }
-            //}
+            this.IngredientIDLabel.BorderThickness = new Thickness(1.0);
+            this.IngredientIDLabel.BorderBrush = SystemColors.ActiveBorderBrush;
+            this.IngredientIDLabel.ToolTip = "Click and drag onto a recipe to add this ingredient ("+this._ingredient.Name+") to a recipe step.";
         }
 
         private void NameTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -162,6 +139,16 @@ namespace RcpMgr3
             if (ingInfo.Trim().Length > 0)
                 //DragDrop.DoDragDrop(this, ingInfo.Trim() + " ("+ this.IngredientIDLabel.Content.ToString()+")", System.Windows.DragDropEffects.Copy);
                 DragDrop.DoDragDrop(this, this, System.Windows.DragDropEffects.Copy);
+        }
+
+        private void IngredientIDLabel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.IngredientIDLabel.Background = SystemColors.ActiveCaptionBrush;
+        }
+
+        private void IngredientIDLabel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.IngredientIDLabel.Background = SystemColors.WindowBrush ;
         }
     }
 }
