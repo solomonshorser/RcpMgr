@@ -36,6 +36,7 @@ namespace RcpMgr3
             //this.NameTextBox.Text = this._recipeStep.Name;
             this.NameTextBox.DataContext = this._recipeStep;
             this.sequenceNumberLabel.DataContext = this._recipeStep;
+            this.NotesTextBox.DataContext = this._recipeStep;
             //this.OperandsBox.ItemsSource = this._recipeStep.Operands;
         }
 
@@ -54,7 +55,7 @@ namespace RcpMgr3
 
             this.sequenceNumberLabel.DataContext = rs;
             this.NameTextBox.DataContext = rs;
-
+            this.NotesTextBox.DataContext = rs;
             this._recipeStep = rs;
         }
         public void SetSequenceNumber(int seq)
@@ -69,6 +70,7 @@ namespace RcpMgr3
             //this.NameTextBox.Text = this._recipeStep.Name;
             this.NameTextBox.DataContext = recipeStep;
             this.sequenceNumberLabel.DataContext = recipeStep;
+            this.NotesTextBox.DataContext = recipeStep;
             //this.OperandsBox.ItemsSource = _recipeStep.Operands;
             this._recipeStep = recipeStep;
             
@@ -280,6 +282,11 @@ namespace RcpMgr3
             this.backgroundBox.Fill = SystemColors.WindowBrush;
             this.NameTextBox.Background = SystemColors.WindowBrush;
             this.NameLabel.Background = SystemColors.WindowBrush;
+        }
+
+        private void NotesTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Step.Details = this.NotesTextBox.Text;
         }
     }
 }
