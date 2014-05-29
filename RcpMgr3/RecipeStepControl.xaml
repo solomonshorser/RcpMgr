@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="189" d:DesignWidth="428"
+             d:DesignHeight="189" d:DesignWidth="740"
              Margin="0,0,0,0"
              BorderThickness="1"
              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
@@ -18,5 +18,7 @@
         <Button x:Name="MoveStepDownButton" Content="Down" HorizontalAlignment="Left" Margin="374,10,3,0" VerticalAlignment="Top" Width="42" Click="MoveStepDownButton_Click" TabIndex="3"/>
         <Label Content="Step #" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="sequenceNumberLabel" Content="{Binding SequenceNumber}" HorizontalAlignment="Left" MinWidth="20" MinHeight="20" Margin="59,10,0,0" VerticalAlignment="Top" FontStyle="Italic" FontWeight="Bold" FontSize="14"/>
+        <TextBox x:Name="NotesTextBox" Text="{Binding Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="110" Margin="443,67,3,3" TextWrapping="Wrap" VerticalAlignment="Top" Width="285" LostFocus="NotesTextBox_LostFocus"/>
+        <Label Content="Notes:" HorizontalAlignment="Left" Margin="443,36,0,0" VerticalAlignment="Top" Width="107"/>
     </Grid>
 </UserControl>
