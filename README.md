@@ -1,3 +1,3 @@
 RcpMgr
 ======
- Test ReadMe
+Recipe management software.
