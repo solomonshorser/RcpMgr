@@ -55,6 +55,7 @@ namespace RcpMgr3
 
             this.sequenceNumberLabel.DataContext = rs;
             this.NameTextBox.DataContext = rs;
+            this.NameTextBox.Text = rs.Name;
             this.NotesTextBox.DataContext = rs;
             this._recipeStep = rs;
         }
@@ -121,9 +122,6 @@ namespace RcpMgr3
             }
         }
 
-        private void UpdateDependents()
-        {
-        }
 
         private void OperandsBox_Drop(object sender, DragEventArgs e)
         {
@@ -258,7 +256,6 @@ namespace RcpMgr3
                         _recipeStep.Operands.Remove(ictrl.Ingredient);
                     };
                     this.OperandsBox.Items.Add(ingInfoLabel);
-                    
                 }
             }
         }
