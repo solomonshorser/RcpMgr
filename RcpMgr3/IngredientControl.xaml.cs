@@ -18,6 +18,8 @@ namespace RcpMgr3
 {
     public delegate void IngredientChangedEventHandler(object sender, EventArgs args);
 
+    public delegate void DeleteIngredientEventHandler(object sender, EventArgs args);
+
     /// <summary>
     /// Interaction logic for IngredientControl.xaml
     /// </summary>
@@ -26,9 +28,10 @@ namespace RcpMgr3
     {
         private bool _uiEnabled = true;
 
-        public event IngredientChangedEventHandler IngredientChanged;
-
         private Ingredient _ingredient;
+
+        public IngredientChangedEventHandler IngredientChanged { get; set; }
+        public DeleteIngredientEventHandler IngredientDeleted { get; set; }
 
         public Ingredient Ingredient
         {
@@ -149,6 +152,15 @@ namespace RcpMgr3
         private void IngredientIDLabel_MouseLeave(object sender, MouseEventArgs e)
         {
             this.IngredientIDLabel.Background = SystemColors.WindowBrush ;
+        }
+
+
+        private void deleteIngredientButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.IngredientDeleted != null)
+            {
+                this.IngredientDeleted.Invoke(sender, e);
+            }
         }
     }
 }
