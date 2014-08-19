@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:RcpMgr3"
              mc:Ignorable="d"
-             d:DesignHeight="138.667" d:DesignWidth="245" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+             d:DesignHeight="159.667" d:DesignWidth="245" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
     <Grid  Margin="0,0,5,5">
         <!--
         <Grid.DataContext>
@@ -18,12 +18,13 @@
         <Label Content="Name" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top"/>
         <Label Content="Quantity" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
         <Label Content="Unit of Measure" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top"/>
-        
+
         <Label x:Name="IngredientIDLabel" Content="{Binding Path=ID, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" FontStyle="Italic" FontSize="10" 
                MouseLeftButtonDown="IngredientIDLabel_MouseLeftButtonDown"
                MouseRightButtonDown="IngredientIDLabel_MouseRightButtonDown"
                MouseEnter="IngredientIDLabel_MouseEnter"
                MouseLeave="IngredientIDLabel_MouseLeave"/>
+        <Button x:Name="deleteIngredientButton" Content="Remove Ingredient" HorizontalAlignment="Left" Margin="118,127,0,0" VerticalAlignment="Top" Width="112" Click="deleteIngredientButton_Click"/>
 
     </Grid>
 </UserControl>
