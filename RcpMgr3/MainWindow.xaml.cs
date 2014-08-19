@@ -46,12 +46,39 @@ namespace RcpMgr3
         private void NewIngredientMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Ingredient i = new Ingredient();
+            
             addNewIngredient(i);
         }
 
         private void addNewIngredientControl(IngredientControl ic)
         {
             ic.Margin = new Thickness(3, 3, 3, 3);
+            ic.IngredientDeleted += (object o, EventArgs args) =>
+            {
+                String componentsUsing = "";
+                //first check to see if the ingredient is in use anywhere.
+
+                foreach (RecipeStepControl rsc in this.StepStackPanel.Children)
+                {
+                    bool matchingIngredient = rsc.Step.Operands.Any(
+                        (RecipeComponent rc) => { return rc.ID == ic.Ingredient.ID; }
+                    );
+
+                    if (matchingIngredient)
+                    {
+                        componentsUsing += rsc.sequenceNumberLabel.Content + rsc.Name + "\n";
+                    }
+                }
+                if (!componentsUsing.Equals(""))
+                {
+                    MessageBox.Show("Sorry, you cannot remove that ingredient, it is used by: \n" + componentsUsing);
+                }
+                else
+                {
+                    this.rcp.RemoveIngredient(ic.Ingredient);
+                    this.IngredientsStackPanel.Children.Remove(ic);
+                }
+            };
             _iCtrls.Add(ic);
 
             IngredientsStackPanel.Children.Add(ic);
@@ -60,11 +87,8 @@ namespace RcpMgr3
         private void addNewIngredient(Ingredient i)
         {
             IngredientControl ic = new IngredientControl(i);
-            //this.IngredientsListBox.Items.Add(ic);
-            ic.Margin = new Thickness(3, 3, 3, 3);
-            _iCtrls.Add(ic);
 
-            IngredientsStackPanel.Children.Add(ic);
+            addNewIngredientControl(ic);
         }
 
 
@@ -234,5 +258,6 @@ namespace RcpMgr3
             }
             return null;
         }
+
     }
 }
