@@ -19,6 +19,8 @@ namespace RcpMgr3
     public delegate void RecipeStepMovedUpEventHandler(object sender, EventArgs args);
     public delegate void RecipeStepMovedDownEventHandler(object sender, EventArgs args);
     public delegate void DeleteOperandEventHandler(object sender, EventArgs args);
+    public delegate void DeleteStepEventHandler(object sender, EventArgs args);
+
     /// <summary>
     /// Interaction logic for RecipeStepControl.xaml
     /// </summary>
@@ -30,6 +32,7 @@ namespace RcpMgr3
         public event RecipeStepMovedDownEventHandler MovedDown;
         public event RecipeOperandChangedEventHandler OperandChanged;
         public event DeleteOperandEventHandler OperandDeleted;
+        public event DeleteStepEventHandler StepDeleted;
 
         public RecipeStepControl()
         {
@@ -326,9 +329,17 @@ namespace RcpMgr3
             }
         }
 
-        private void OperandsBox_LostFocus(object sender, RoutedEventArgs e)
+        private void removeStepButton_Click(object sender, RoutedEventArgs e)
         {
-            this.OperandsBox.SelectedIndex = -1;
+            if (StepDeleted != null)
+            {
+                this.StepDeleted.Invoke(sender, e);
+            }
+        }
+
+        private void UserControl_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //this.OperandsBox.SelectedIndex = -1;
         }
     }
 }

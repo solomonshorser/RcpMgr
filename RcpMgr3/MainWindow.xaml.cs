@@ -117,6 +117,21 @@ namespace RcpMgr3
                 this.StepStackPanel.MoveItemDown(rsc);
                 int seq = this.StepStackPanel.Children.IndexOf(rsc)+1;
             };
+
+            rsc.StepDeleted += (object o, EventArgs args) =>
+            {
+                //Before we remove a step, we should check that it's not used anywhere.
+                RecipeStep step = rcp.Steps.Find(x => (x.Operands.Find(y => y.ID.Equals(rsc.Step.ID))) != null );
+                if (step != null)
+                {
+                    MessageBox.Show("Sorry, you can't delete this step. It is used by " + step.Name);
+                }
+                else
+                {
+                    rcp.RemoveStep(rsc.Step);
+                    this.StepStackPanel.Children.Remove(rsc);
+                }
+            };
         }
 
         private void saveRecipe(object sender, RoutedEventArgs e)

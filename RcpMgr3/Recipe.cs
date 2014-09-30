@@ -58,7 +58,7 @@ namespace RcpMgr3
 
         internal void RemoveStep(RecipeStep rs)
         {
-            _steps.Remove(rs);
+            _steps.RemoveAll(x => x.ID.Equals(rs.ID));
         }
     }
 }
