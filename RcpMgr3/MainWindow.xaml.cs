@@ -75,12 +75,13 @@ namespace RcpMgr3
                 }
                 else
                 {
+                    rmgr.RemoveIngredient(ic.Ingredient);
                     this.rcp.RemoveIngredient(ic.Ingredient);
                     this.IngredientsStackPanel.Children.Remove(ic);
                 }
             };
             _iCtrls.Add(ic);
-
+            rmgr.AddIngredient(ic.Ingredient);
             IngredientsStackPanel.Children.Add(ic);
         }
 
@@ -105,6 +106,7 @@ namespace RcpMgr3
             
             this.StepStackPanel.Children.Add(rsc);
             int seqNum = this.StepStackPanel.Children.IndexOf(rsc) + 1;
+            
             rsc.SetSequenceNumber(seqNum);
             rsc.MovedUp += (object o, EventArgs args) =>
             {
@@ -136,8 +138,10 @@ namespace RcpMgr3
                 {
                     rcp.RemoveStep(rsc.Step);
                     this.StepStackPanel.Children.Remove(rsc);
+                    rmgr.RemoveStep(rsc.Step);
                 }
             };
+            rmgr.AddStep(rsc.Step);
         }
 
         private void saveRecipe(object sender, RoutedEventArgs e)
@@ -150,10 +154,10 @@ namespace RcpMgr3
                 r.AddIngredient(ictrl.Ingredient);
             }
 
-            foreach (RecipeStepControl stpctrl in this.StepStackPanel.Children)
-            {
-                r.AddStep(stpctrl.Step);
-            }
+            //foreach (RecipeStepControl stpctrl in this.StepStackPanel.Children)
+            //{
+            //    r.AddStep(stpctrl.Step);
+            //}
 
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Title = "Save the current recipe";
@@ -201,6 +205,8 @@ namespace RcpMgr3
         private void newRecipeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             clearScreen();
+            this.rcp = new Recipe();
+            rmgr = new RecipeManager(this.rcp);
         }
 
         private void openRecipeMenuItem_Click(object sender, RoutedEventArgs e)

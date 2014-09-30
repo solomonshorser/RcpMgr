@@ -130,8 +130,9 @@ namespace RcpMgr3
 
         public void RemoveStep(RecipeStep rmStep)
         {
-            bool stepInUse = _steps.Values.Any<RecipeStep>((RecipeStep s) => { return s.ID.Equals(rmStep.ID); });
-            if (stepInUse)
+            //bool stepInUse = _steps.Values.Any<RecipeStep>((RecipeStep s) => { return s.ID.Equals(rmStep.ID); });
+            RecipeStep usedBy = _steps.Values.FirstOrDefault(x => ( x.Operands.Exists(y => y.ID.Equals(rmStep.ID) ) ) );
+            if (usedBy != null)
             {
                 throw new Exception("Sorry, but that step is in use.");
             }
