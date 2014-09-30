@@ -57,6 +57,8 @@ namespace RcpMgr3
     {
         public event EventHandler RecipeComponentDeleted;
 
+        public String RecipeComponentID { get; set; }
+
         public void Delete(object o, EventArgs args)
         {
             RecipeComponentDeleted.Invoke(o, args);

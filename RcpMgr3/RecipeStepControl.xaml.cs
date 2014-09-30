@@ -18,7 +18,7 @@ namespace RcpMgr3
     public delegate void RecipeOperandChangedEventHandler(object sender, EventArgs args);
     public delegate void RecipeStepMovedUpEventHandler(object sender, EventArgs args);
     public delegate void RecipeStepMovedDownEventHandler(object sender, EventArgs args);
-
+    public delegate void DeleteOperandEventHandler(object sender, EventArgs args);
     /// <summary>
     /// Interaction logic for RecipeStepControl.xaml
     /// </summary>
@@ -26,9 +26,10 @@ namespace RcpMgr3
     {
         private RecipeStep _recipeStep = new RecipeStep();
 
-        public event RecipeOperandChangedEventHandler OperandChanged;
         public event RecipeStepMovedUpEventHandler MovedUp;
         public event RecipeStepMovedDownEventHandler MovedDown;
+        public event RecipeOperandChangedEventHandler OperandChanged;
+        public event DeleteOperandEventHandler OperandDeleted;
 
         public RecipeStepControl()
         {
@@ -46,18 +47,17 @@ namespace RcpMgr3
             InitializeComponent();
             //this.NameTextBox.Text = name;
 
-            RecipeStep rs = new RecipeStep();
+            this._recipeStep = new RecipeStep();
 
-            rs.Name = name;
-            rs.ID = ID;
-            rs.Details = detail;
-            rs.SequenceNumber = seqNum;
+            this._recipeStep.Name = name;
+            this._recipeStep.ID = ID;
+            this._recipeStep.Details = detail;
+            this._recipeStep.SequenceNumber = seqNum;
 
-            this.sequenceNumberLabel.DataContext = rs;
-            this.NameTextBox.DataContext = rs;
-            this.NameTextBox.Text = rs.Name;
-            this.NotesTextBox.DataContext = rs;
-            this._recipeStep = rs;
+            this.sequenceNumberLabel.DataContext = this._recipeStep;
+            this.NameTextBox.DataContext = this._recipeStep;
+            this.NameTextBox.Text = this._recipeStep.Name;
+            this.NotesTextBox.DataContext = this._recipeStep;
         }
         public void SetSequenceNumber(int seq)
         {
@@ -73,6 +73,7 @@ namespace RcpMgr3
             this.sequenceNumberLabel.DataContext = recipeStep;
             this.NotesTextBox.DataContext = recipeStep;
             //this.OperandsBox.ItemsSource = _recipeStep.Operands;
+            this._recipeStep.ID = recipeStep.ID;
             this._recipeStep = recipeStep;
             
             foreach (RecipeComponent rComponent in recipeStep.Operands)
@@ -80,7 +81,7 @@ namespace RcpMgr3
                 if (rComponent is Ingredient)
                 {
                     IngredientControl ingredientControl = new IngredientControl(rComponent as Ingredient);
-                    addIngredientToRecipeStep(ingredientControl, this);
+                    addOperandToRecipeStep(ingredientControl, this);
                 }
                 else if (rComponent is RecipeStep)
                 {
@@ -132,11 +133,11 @@ namespace RcpMgr3
             if (ictrl==null && rctrl ==null)
                 e.Effects = DragDropEffects.None;
             else
-                addIngredientToRecipeStep(ictrl, rctrl);
+                addOperandToRecipeStep(ictrl, rctrl);
 
         }
 
-        private void addIngredientToRecipeStep(IngredientControl ictrl, RecipeStepControl rctrl)
+        private void addOperandToRecipeStep(IngredientControl ictrl, RecipeStepControl rctrl)
         {
             if (ictrl != null)
             {
@@ -149,6 +150,37 @@ namespace RcpMgr3
             
         }
 
+        internal void addIngredientControl(IngredientControl ictrl)
+        {
+            if (!_recipeStep.Operands.Any((RecipeComponent c) => { return c.ID == ictrl.Ingredient.ID; }))
+            {
+                _recipeStep.AddOperand(ictrl.Ingredient);
+                String i = ictrl.SummaryString;
+                if (i != null)
+                {
+                    RecipeComponentLabel ingInfoLabel = new RecipeComponentLabel();
+                    ingInfoLabel.Text = i;
+                    ingInfoLabel.RecipeComponentID = ictrl.Ingredient.ID;
+                    ictrl.IngredientChanged += (object o, EventArgs args) =>
+                    {
+                        ingInfoLabel.Text = ictrl.SummaryString;
+                    };
+
+                    ingInfoLabel.TextChanged += (object o, EventArgs args) =>
+                    {
+                        if (OperandChanged != null) OperandChanged(o, args);
+                    };
+
+                    ingInfoLabel.RecipeComponentDeleted += (object o, EventArgs args) =>
+                    {
+                        _recipeStep.Operands.Remove(ictrl.Ingredient);
+                    };
+                    
+                    this.OperandsBox.Items.Add(ingInfoLabel);
+                }
+            }
+        }
+
         internal void addRecipeStepControl(RecipeStepControl rctrl)
         {
             _recipeStep.AddOperand(rctrl.Step);
@@ -157,7 +189,7 @@ namespace RcpMgr3
             {
                 RecipeComponentLabel l = new RecipeComponentLabel();
                 l.Text = r;
-
+                l.RecipeComponentID = rctrl.Step.ID;
                 l.RecipeComponentDeleted += (object o, EventArgs args) =>
                 {
                     _recipeStep.Operands.Remove(rctrl.Step);
@@ -167,7 +199,7 @@ namespace RcpMgr3
                 {
                     l.Text = rctrl.Summary;
                 };
-
+                
                 this.OperandsBox.Items.Add(l);
             }
         }
@@ -230,35 +262,7 @@ namespace RcpMgr3
                 this.OperandChanged.Invoke(sender, e);
         }
 
-        internal void addIngredientControl(IngredientControl ictrl)
-        {
-            if (!_recipeStep.Operands.Any((RecipeComponent c) => { return c.ID == ictrl.Ingredient.ID; }))
-            {
-                _recipeStep.AddOperand(ictrl.Ingredient);
-                String i = ictrl.SummaryString;
-                if (i != null)
-                {
-                    RecipeComponentLabel ingInfoLabel = new RecipeComponentLabel();
-                    ingInfoLabel.Text = i;
-
-                    ictrl.IngredientChanged += (object o, EventArgs args) =>
-                    {
-                        ingInfoLabel.Text = ictrl.SummaryString;
-                    };
-
-                    ingInfoLabel.TextChanged += (object o, EventArgs args) =>
-                    {
-                        if (OperandChanged != null) OperandChanged(o, args);
-                    };
-
-                    ingInfoLabel.RecipeComponentDeleted += (object o, EventArgs args) =>
-                    {
-                        _recipeStep.Operands.Remove(ictrl.Ingredient);
-                    };
-                    this.OperandsBox.Items.Add(ingInfoLabel);
-                }
-            }
-        }
+       
 
         internal RecipeStepControl getStep(string stepID)
         {
@@ -284,6 +288,47 @@ namespace RcpMgr3
         private void NotesTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             this.Step.Details = this.NotesTextBox.Text;
+        }
+
+        private void removeOperandButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.OperandsBox.SelectedIndex >= 0)
+            {
+                String idToDelete = ((RecipeComponentLabel)this.OperandsBox.SelectedItem).RecipeComponentID;
+
+                RecipeComponent componentToDelete = this._recipeStep.Operands.Single((RecipeComponent rc) =>
+                    {
+                        return idToDelete.Equals(rc.ID);
+                    });
+
+                this._recipeStep.Operands.Remove(componentToDelete);
+                this.OperandsBox.Items.RemoveAt(this.OperandsBox.SelectedIndex);
+                if (OperandChanged != null)
+                {
+                    this.OperandChanged.Invoke(sender, e);
+                }
+                if (OperandDeleted != null)
+                {
+                    this.OperandDeleted.Invoke(sender, e);
+                }
+            }
+        }
+
+        private void OperandsBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.OperandsBox.SelectedIndex >= 0)
+            {
+                this.removeOperandButton.IsEnabled = true;
+            }
+            else
+            {
+                this.removeOperandButton.IsEnabled = false;
+            }
+        }
+
+        private void OperandsBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.OperandsBox.SelectedIndex = -1;
         }
     }
 }

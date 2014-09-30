@@ -9,8 +9,6 @@ namespace RcpMgr3
     [Serializable]
     public partial class Ingredient : RecipeComponent
     {
-        //public String ID { get; set; }
-        //public String Name { get; set; }
         public String Quantity { get; set; }
         public String UnitOfMeasure { get; set; }
         public String Notes { get; set; }

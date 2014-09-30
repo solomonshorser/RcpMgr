@@ -66,12 +66,12 @@ namespace RcpMgr3
 
                     if (matchingIngredient)
                     {
-                        componentsUsing += rsc.sequenceNumberLabel.Content + rsc.Name + "\n";
+                        componentsUsing += rsc.sequenceNumberLabel.Content +"; "+ rsc.Step.Name + "\n";
                     }
                 }
                 if (!componentsUsing.Equals(""))
                 {
-                    MessageBox.Show("Sorry, you cannot remove that ingredient, it is used by: \n" + componentsUsing);
+                    MessageBox.Show("Sorry, you cannot remove that ingredient, it is used by: \n" + componentsUsing,"Error!",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
                 else
                 {
@@ -197,24 +197,24 @@ namespace RcpMgr3
 
                 if (result == true)
                 {
-                    Recipe r = new Recipe();
+                    Recipe recipe = new Recipe();
 
                     XmlReader xReader = new XmlTextReader(dialog.FileName);
-                    XmlSerializer x = new XmlSerializer(r.GetType());
-                    r = (Recipe)x.Deserialize(xReader);
+                    XmlSerializer x = new XmlSerializer(recipe.GetType());
+                    recipe = (Recipe)x.Deserialize(xReader);
 
-                    if (r != null)
+                    if (recipe != null)
                     {
-                        this.titleTextBox.Text = r.Name;
-                        this.rcp = r;
+                        this.titleTextBox.Text = recipe.Name;
+                        this.rcp = recipe;
 
 
-                        foreach (RecipeStep s in rcp.Steps)
+                        foreach (RecipeStep step in rcp.Steps)
                         {
-                            RecipeStepControl rsp = new RecipeStepControl(s.Name, s.ID, s.Details, s.SequenceNumber);
+                            RecipeStepControl rsp = new RecipeStepControl(step.Name, step.ID, step.Details, step.SequenceNumber);
 
 
-                            foreach (RecipeComponent rc in s.Operands)
+                            foreach (RecipeComponent rc in step.Operands)
                             {
                                 if (rc is Ingredient)
                                 {
@@ -243,7 +243,7 @@ namespace RcpMgr3
                             }
                             this.addNewStep(rsp);
                         }
-                        this.titleTextBox.Text = r.Name;
+                        this.titleTextBox.Text = recipe.Name;
                     }
                 }
             }

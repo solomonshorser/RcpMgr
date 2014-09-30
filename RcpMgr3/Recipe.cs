@@ -55,5 +55,10 @@ namespace RcpMgr3
             _steps.Add(rs);
         }
 
+
+        internal void RemoveStep(RecipeStep rs)
+        {
+            _steps.Remove(rs);
+        }
     }
 }

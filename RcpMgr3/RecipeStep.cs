@@ -9,10 +9,6 @@ namespace RcpMgr3
     [Serializable]
     public partial class RecipeStep : RecipeComponent
     {
-
-        public String ID { get; set; }
-        public String Name { get; set; }
-
         private List<RecipeComponent> _operands = new List<RecipeComponent>();
         public List<RecipeComponent> Operands
         {

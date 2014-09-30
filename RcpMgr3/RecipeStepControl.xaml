@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="189" d:DesignWidth="640"
+             mc:Ignorable="d" d:DesignWidth="640"
              Margin="0,0,0,0"
              BorderThickness="1"
-             BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+             BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Height="213.667">
     <Grid>
         <Rectangle x:Name="backgroundBox" HorizontalAlignment="Left" Height="35" Margin="109,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="192"/>
         <Label x:Name="NameLabel" Content="Name" HorizontalAlignment="Left" Margin="118,15,0,0" VerticalAlignment="Top" MouseDown="Label_MouseDown" BorderBrush="Black" MouseEnter="Label_MouseEnter" MouseLeave="Label_MouseLeave"/>
         <TextBox x:Name="NameTextBox" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="165,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" LostFocus="NameTextBox_LostFocus" TabIndex="1"/>
-        <ListBox x:Name="OperandsBox" HorizontalAlignment="Left" Height="110" Margin="10,67,0,3" VerticalAlignment="Top" Width="406"   Drop="OperandsBox_Drop" AllowDrop="True" KeyDown="OperandsBox_KeyDown" TabIndex="4"/>
+        <ListBox x:Name="OperandsBox" HorizontalAlignment="Left" Height="110" Margin="10,67,0,3" VerticalAlignment="Top" Width="406"   Drop="OperandsBox_Drop" AllowDrop="True" KeyDown="OperandsBox_KeyDown" TabIndex="4" SelectionChanged="OperandsBox_SelectionChanged" LostFocus="OperandsBox_LostFocus"/>
         <Label Content="Operands" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Button x:Name="MoveStepUpButton" Content="Up" HorizontalAlignment="Left" Margin="327,10,0,0" VerticalAlignment="Top" Width="42" Click="MoveStepUpButton_Click" TabIndex="2"/>
         <Button x:Name="MoveStepDownButton" Content="Down" HorizontalAlignment="Left" Margin="374,10,3,0" VerticalAlignment="Top" Width="42" Click="MoveStepDownButton_Click" TabIndex="3"/>
@@ -20,5 +19,6 @@
         <Label x:Name="sequenceNumberLabel" Content="{Binding SequenceNumber}" HorizontalAlignment="Left" MinWidth="20" MinHeight="20" Margin="59,10,0,0" VerticalAlignment="Top" FontStyle="Italic" FontWeight="Bold" FontSize="14"/>
         <TextBox x:Name="NotesTextBox" Text="{Binding Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="110" Margin="443,67,10,0" Padding="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" LostFocus="NotesTextBox_LostFocus"/>
         <Label Content="Notes:" HorizontalAlignment="Left" Margin="443,36,0,0" VerticalAlignment="Top" Width="107"/>
+        <Button x:Name="removeOperandButton" Content="Remove Selected" HorizontalAlignment="Left" Height="22" Margin="10,182,0,0" VerticalAlignment="Top" Width="109" Click="removeOperandButton_Click" IsEnabled="False"/>
     </Grid>
 </UserControl>
