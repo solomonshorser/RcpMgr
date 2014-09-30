@@ -121,6 +121,12 @@ namespace RcpMgr3
             rsc.StepDeleted += (object o, EventArgs args) =>
             {
                 //Before we remove a step, we should check that it's not used anywhere.
+
+                //Of course, this doesn't actually work. We need to keep rcp.Steps updated with all of the current steps, but 
+                //currently, rcp.Steps is only populated when saving to file, or loading from a recipe that's already been saved.
+                //I Really need to find a more organized way of keeping everything in sync. Probably a good time to branch and
+                //rip everything apart and then put it back together into something coherent. This is becoming a bit too
+                //complicated to keep going the way things are...
                 RecipeStep step = rcp.Steps.Find(x => (x.Operands.Find(y => y.ID.Equals(rsc.Step.ID))) != null );
                 if (step != null)
                 {
