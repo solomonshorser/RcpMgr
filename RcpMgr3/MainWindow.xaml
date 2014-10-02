@@ -22,7 +22,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="New..." x:Name="newRecipeMenuItem" Command="New"/>
                 <MenuItem Header="Open..." x:Name="openRecipeMenuItem" Command="Open"/>
-                <MenuItem Header="Save..." Click="saveRecipe" x:Name="saveMenuItem" Command="Save"/>
+                <MenuItem Header="Save..."  x:Name="saveMenuItem" Command="Save"/>
                 <MenuItem Header="Export to HTML" x:Name="exportToHTMLItem"/>
                 <MenuItem x:Name="ExitMenuItem" Header="Exit" Click="ExitMenuItem_Click"/>
             </MenuItem>
@@ -44,7 +44,7 @@
             <!--<ListBox Name="IngredientsListBox" HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}" Grid.Row="0" Grid.Column="0"  VerticalAlignment="Top" Width="{Binding Width, ElementName=IngredientsCol}"/>-->
             <!--<local:EnhancedListBox x:Name="StepListBox"  HorizontalAlignment="Left" Height="{Binding Height, ElementName=RecipeGrid}"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" Width="{Binding Width, ElementName=StepCol}"/>-->
             <Label Content="Recipe name:" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-            <TextBox Name="titleTextBox" Width="120" Grid.Row="0" Grid.Column="1" Height="27" Margin="65,4,75,4" />
+            <TextBox Name="titleTextBox" Width="120" Grid.Row="0" Grid.Column="1" Height="27" Margin="65,4,75,4" LostFocus="titleTextBox_LostFocus" />
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Border BorderBrush="Black" BorderThickness="1">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
