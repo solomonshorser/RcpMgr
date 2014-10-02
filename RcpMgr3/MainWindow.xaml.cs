@@ -26,7 +26,7 @@ namespace RcpMgr3
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<IngredientControl> _iCtrls = new List<IngredientControl>();
+        //private List<IngredientControl> _iCtrls = new List<IngredientControl>();
 
         private Recipe rcp = new Recipe();
 
@@ -46,7 +46,6 @@ namespace RcpMgr3
         private void NewIngredientMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Ingredient i = new Ingredient();
-            
             addNewIngredient(i);
         }
 
@@ -57,7 +56,6 @@ namespace RcpMgr3
             {
                 String componentsUsing = "";
                 //first check to see if the ingredient is in use anywhere.
-
                 foreach (RecipeStepControl rsc in this.StepStackPanel.Children)
                 {
                     bool matchingIngredient = rsc.Step.Operands.Any(
@@ -71,22 +69,24 @@ namespace RcpMgr3
                 }
                 if (!componentsUsing.Equals(""))
                 {
-                    MessageBox.Show("Sorry, you cannot remove that ingredient, it is used by: \n" + componentsUsing,"Error!",MessageBoxButton.OK,MessageBoxImage.Error);
+                    MessageBox.Show("Sorry, you cannot remove that ingredient, it is used by: \nStep: " + componentsUsing,"Error!",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
                 else
                 {
                     rmgr.RemoveIngredient(ic.Ingredient);
-                    this.rcp.RemoveIngredient(ic.Ingredient);
+                    //this.rcp.RemoveIngredient(ic.Ingredient);
                     this.IngredientsStackPanel.Children.Remove(ic);
                 }
+                
             };
-            _iCtrls.Add(ic);
+            //_iCtrls.Add(ic);
             rmgr.AddIngredient(ic.Ingredient);
             IngredientsStackPanel.Children.Add(ic);
         }
 
         private void addNewIngredient(Ingredient i)
         {
+            this.rcp.AddIngredient(i);
             IngredientControl ic = new IngredientControl(i);
 
             addNewIngredientControl(ic);
@@ -123,16 +123,10 @@ namespace RcpMgr3
             rsc.StepDeleted += (object o, EventArgs args) =>
             {
                 //Before we remove a step, we should check that it's not used anywhere.
-
-                //Of course, this doesn't actually work. We need to keep rcp.Steps updated with all of the current steps, but 
-                //currently, rcp.Steps is only populated when saving to file, or loading from a recipe that's already been saved.
-                //I Really need to find a more organized way of keeping everything in sync. Probably a good time to branch and
-                //rip everything apart and then put it back together into something coherent. This is becoming a bit too
-                //complicated to keep going the way things are...
                 RecipeStep step = rcp.Steps.Find(x => (x.Operands.Find(y => y.ID.Equals(rsc.Step.ID))) != null );
                 if (step != null)
                 {
-                    MessageBox.Show("Sorry, you can't delete this step. It is used by " + step.Name);
+                    MessageBox.Show("Sorry, you can't delete this step. It is used by:\nStep: " + step.SequenceNumber + "; " + step.Name, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -146,19 +140,13 @@ namespace RcpMgr3
 
         private void saveRecipe(object sender, RoutedEventArgs e)
         {
-            Recipe r = new Recipe();
-            r.Name = this.titleTextBox.Text;
+            //Recipe r = new Recipe();
+            //r.Name = this.titleTextBox.Text;
 
-            foreach (IngredientControl ictrl in this._iCtrls)
-            {
-                r.AddIngredient(ictrl.Ingredient);
-            }
-
-            //foreach (RecipeStepControl stpctrl in this.StepStackPanel.Children)
+            //foreach (IngredientControl ictrl in this._iCtrls)
             //{
-            //    r.AddStep(stpctrl.Step);
+            //    r.AddIngredient(ictrl.Ingredient);
             //}
-
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Title = "Save the current recipe";
             dialog.Filter = "XML-file (.xml)|*.xml";
@@ -175,11 +163,9 @@ namespace RcpMgr3
                 FileInfo file = new FileInfo(filename);
                 FileStream fstream = file.Create();
                 
-                XmlSerializer x = new XmlSerializer(r.GetType());
-                x.Serialize(fstream, r);
+                XmlSerializer x = new XmlSerializer(this.rcp.GetType());
+                x.Serialize(fstream, rmgr.GetRecipe());
             }
-
-            
         }
 
         private bool clearScreen()
@@ -192,6 +178,7 @@ namespace RcpMgr3
                 if (result == MessageBoxResult.OK)
                 {
                     this.rcp = new Recipe();
+                    rmgr = new RecipeManager(this.rcp);
                     this.titleTextBox.Text = "";
                     this.IngredientsStackPanel.Children.Clear();
                     this.StepStackPanel.Children.Clear();
@@ -205,8 +192,6 @@ namespace RcpMgr3
         private void newRecipeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             clearScreen();
-            this.rcp = new Recipe();
-            rmgr = new RecipeManager(this.rcp);
         }
 
         private void openRecipeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -284,6 +269,11 @@ namespace RcpMgr3
                     return c;
             }
             return null;
+        }
+
+        private void titleTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.rmgr.GetRecipe().Name = this.titleTextBox.Text;
         }
 
     }
