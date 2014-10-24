@@ -27,6 +27,6 @@
                MouseLeave="IngredientIDLabel_MouseLeave"/>
         <Button x:Name="deleteIngredientButton" Content="Remove Ingredient" HorizontalAlignment="Left" Margin="118,127,0,0" VerticalAlignment="Top" Width="112" Click="deleteIngredientButton_Click"/>
         <my:DragHandleRect x:Name="dragHandle" HorizontalAlignment="Left" Height="158" Margin="-20,0,0,-5" VerticalAlignment="Top" Width="20"
-                           OnClickBrush="AliceBlue" OnHoverBrush="Gainsboro" IdleBrush="DarkGray"/>
+                           OnClickBrush="CornflowerBlue" OnHoverBrush="Gainsboro" IdleBrush="DarkGray"/>
     </Grid>
 </UserControl>
