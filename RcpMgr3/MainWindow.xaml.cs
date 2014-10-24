@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using System.Xml;
+using NLog;
 
 namespace RcpMgr3
 {
@@ -26,6 +27,8 @@ namespace RcpMgr3
     /// </summary>
     public partial class MainWindow : Window
     {
+        Logger logger = LogManager.GetCurrentClassLogger();
+
         //private List<IngredientControl> _iCtrls = new List<IngredientControl>();
 
         private Recipe rcp = new Recipe();
@@ -34,6 +37,7 @@ namespace RcpMgr3
 
         public MainWindow()
         {
+            logger.Debug("init");
             InitializeComponent();
             rmgr = new RecipeManager(rcp);
         }
@@ -51,6 +55,7 @@ namespace RcpMgr3
 
         private void addNewIngredientControl(IngredientControl ic)
         {
+            logger.Debug("Adding Control ingredient: " + ic.Ingredient.ToString());
             ic.Margin = new Thickness(3, 3, 3, 3);
             ic.IngredientDeleted += (object o, EventArgs args) =>
             {
@@ -101,7 +106,7 @@ namespace RcpMgr3
 
         private void addNewStep(RecipeStepControl rsc)
         {
-
+            logger.Debug("Adding Control for Step: " + rsc.Step.ToString());
             rsc.Margin = new Thickness(3, 3, 3, 3);
             
             this.StepStackPanel.Children.Add(rsc);
@@ -164,6 +169,7 @@ namespace RcpMgr3
                 FileStream fstream = file.Create();
                 
                 XmlSerializer x = new XmlSerializer(this.rcp.GetType());
+                logger.Debug("Saving to file: " + dialog.FileName);
                 x.Serialize(fstream, rmgr.GetRecipe());
             }
         }
@@ -209,6 +215,7 @@ namespace RcpMgr3
 
                 if (result == true)
                 {
+                    logger.Debug("Loading from file: " + dialog.FileName);
                     Recipe recipe = new Recipe();
 
                     XmlReader xReader = new XmlTextReader(dialog.FileName);
