@@ -1,12 +1,13 @@
 ﻿<UserControl x:Class="RcpMgr3.IngredientControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:my="clr-namespace:RcpMgr3"
              mc:Ignorable="d"
              d:DesignHeight="159.667" d:DesignWidth="245" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-    <Grid  Margin="0,0,5,5">
+
+    <Grid  Margin="20,0,5,5">
         <!--
         <Grid.DataContext>
             <my:Ingredient />
@@ -25,6 +26,7 @@
                MouseEnter="IngredientIDLabel_MouseEnter"
                MouseLeave="IngredientIDLabel_MouseLeave"/>
         <Button x:Name="deleteIngredientButton" Content="Remove Ingredient" HorizontalAlignment="Left" Margin="118,127,0,0" VerticalAlignment="Top" Width="112" Click="deleteIngredientButton_Click"/>
-
+        <my:DragHandleRect x:Name="dragHandle" HorizontalAlignment="Left" Height="158" Margin="-20,0,0,-5" VerticalAlignment="Top" Width="20"
+                           OnClickBrush="AliceBlue" OnHoverBrush="Gainsboro" IdleBrush="DarkGray"/>
     </Grid>
 </UserControl>
